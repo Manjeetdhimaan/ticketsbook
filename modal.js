@@ -17,7 +17,6 @@ span.onclick = function() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // modal.style.display = "block";
     setTimeout(() => {
         modal.style.display = "block";
     }, 1500);
