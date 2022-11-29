@@ -132,6 +132,11 @@ ul li {
     display: none;
 }
 
+.errors {
+    float: left;
+    color: rgb(245, 33, 33);
+    padding: 6px;
+}
 
 @-webkit-keyframes rotate {
 

@@ -33,13 +33,15 @@
 </div>
 
 <div class="main-content">
-    <form class="form-search" method="get" action="#">
+    <form class="form-search" action="" method="post">
         <div>
             <label for="code" class="d-block f-left">Enter code</label>
             <input type="text" class="d-block" required name="code" id="code" placeholder="code here..">
+
         </div>
+        <div id="errors"></div>
         <div class="d-block f-left">
-            <button type="submit" id="form-submit">Search</button>
+            <button type="submit" id="form-submit">submit</button>
         </div>
     </form>
 </div>
@@ -60,15 +62,28 @@
 </ul>
 
 <div id="myDIV"></div>
+
 <script>
     const submitBTN = document.getElementById('form-submit');
     const code = document.getElementById('code');
-
+    const errorsDIV = document.getElementById('errors');
+    code.addEventListener('keyup', (event) => {
+        if (!event.target.value || event.target.value === '') {
+            errorsDIV.style.color = "red";
+            errorsDIV.style.padding = "8px";
+            errorsDIV.innerHTML = 'Please enter code'
+        }
+        else {
+            errorsDIV.innerHTML = ''
+        }
+    });
     submitBTN.addEventListener('click', (e) => {
         e.preventDefault();
         console.log(code.value);
         if (!code || code.value === '') {
-            alert('enter code');
+            errorsDIV.style.color = "red";
+            errorsDIV.style.padding = "8px";
+            errorsDIV.innerHTML = 'Please enter code'
             return;
         }
         const payload = {
